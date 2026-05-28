@@ -1,0 +1,139 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// 1. FINAL CLASS
+final class CafeInfo {
+    public static final String CAFE_NAME = "LMN Java Cafe";
+    
+    public final void showWelcome() {
+        System.out.println("Welcome to " + CAFE_NAME);
+    }
+}
+
+// 2. INTERFACE - Adding abstraction to the system
+interface Discountable {
+    double applyDiscount(double percentage);
+}
+
+// 3. SUPERCLASS
+class MenuItem implements Discountable {
+    // Encapsulation: Using private/protected fields
+    protected String name;
+    protected double price;
+
+    public MenuItem(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() { return name; }
+    public double getPrice() { return price; }
+
+    public void displayInfo() {
+        System.out.println(name + " - Br. " + price);
+    }
+
+    // Implementing the Interface method
+    @Override
+    public double applyDiscount(double percentage) {
+        return this.price * (1 - (percentage / 100));
+    }
+
+    public static void categoryMessage() {
+        System.out.println("General Menu Item");
+    }
+}
+
+// 4. CHILD CLASS (Single & Hierarchical Inheritance)
+class Coffee extends MenuItem {
+    private String roast;
+
+    public Coffee(String name, double price, String roast) {
+        super(name, price); 
+        this.roast = roast;
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.print("Coffee Info [" + roast + " Roast]: ");
+        super.displayInfo();
+    }
+    
+    public static void categoryMessage() {
+        System.out.println("Beverage Category");
+    }
+}
+
+// 5. CHILD CLASS (Multilevel Inheritance)
+class Espresso extends Coffee {
+    private int shots;
+
+    public Espresso(String name, double price, String roast, int shots) {
+        super(name, price, roast);
+        this.shots = shots;
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println(name + " (" + shots + " shots) - Br. " + price);
+    }
+}
+
+class Pastry extends MenuItem {
+    public Pastry(String name, double price) {
+        super(name, price);
+    }
+}
+
+// 6. NEW CLASS: Order Management using Collections (ArrayList)
+class Order {
+    private List<MenuItem> items;
+
+    public Order() {
+        this.items = new ArrayList<>();
+    }
+
+    public void addItem(MenuItem item) {
+        items.add(item);
+        System.out.println(item.getName() + " added to order.");
+    }
+
+    public void printReceipt() {
+        System.out.println("\n--- RECEIPT ---");
+        double total = 0;
+        for (MenuItem item : items) {
+            item.displayInfo();
+            total += item.getPrice();
+        }
+        System.out.println("----------------");
+        System.out.println("Total Amount: Br. " + total);
+    }
+}
+
+// 7. MAIN CLASS
+public class CafeSystem {
+    public static void main(String[] args) {
+        CafeInfo cafe = new CafeInfo();
+        cafe.showWelcome();
+
+        // Create items
+        Coffee genericCoffee = new Coffee("House Blend", 40.0, "Medium");
+        Espresso doubleShot = new Espresso("Double Espresso", 60.0, "Dark", 2);
+        Pastry croissant = new Pastry("Butter Croissant", 45.0);
+
+        // Demonstrating Order Collection Workflow
+        System.out.println("\n--- Taking a New Order ---");
+        Order customerOrder = new Order();
+        customerOrder.addItem(genericCoffee);
+        customerOrder.addItem(doubleShot);
+        customerOrder.addItem(croissant);
+
+        // Print Order Summary
+        customerOrder.printReceipt();
+
+        // Demonstrating Interface / Discount implementation
+        System.out.println("\n--- Discount Applied ---");
+        double promoPrice = croissant.applyDiscount(10); // 10% off
+        System.out.println("Promo price for " + croissant.getName() + ": Br. " + promoPrice);
+    }
+}
