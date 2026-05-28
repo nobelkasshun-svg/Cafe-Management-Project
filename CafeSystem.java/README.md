@@ -1,4 +1,4 @@
- # Cafe Management System
+# Cafe Management System
 
 A console-based Cafe Management System built with Java,
 demonstrating core Object-Oriented Programming (OOP) concepts.
