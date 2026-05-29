@@ -22,33 +22,20 @@ jobs:
           distribution: 'temurin'
 
       - name: Show project structure
-        run: |
-          echo "Project structure:"
-          find . -name "*.java" | head -20
+        run: find . -name "*.java"
 
       - name: Compile Java code
         run: |
-          javac src/rental/*.java
+          javac src/rental/Vehicle.java src/rental/Car.java src/rental/Motorcycle.java src/rental/Customer.java src/rental/RentalManager.java src/rental/Main.java
           echo "Compilation successful!"
-
-      - name: Check all required files exist
-        run: |
-          test -f src/rental/Vehicle.java && echo "Vehicle.java found" || echo "Vehicle.java missing"
-          test -f src/rental/Car.java && echo "Car.java found" || echo "Car.java missing"
-          test -f src/rental/Motorcycle.java && echo "Motorcycle.java found" || echo "Motorcycle.java missing"
-          test -f src/rental/Customer.java && echo "Customer.java found" || echo "Customer.java missing"
-          test -f src/rental/RentalManager.java && echo "RentalManager.java found" || echo "RentalManager.java missing"
-          test -f src/rental/Main.java && echo "Main.java found" || echo "Main.java missing"
-          test -f README.md && echo "README.md found" || echo "README.md missing"
 
       - name: Run the program
         run: |
-          javac src/rental/*.java
           java -cp src rental.Main
 
       - name: Check OOP concepts
         run: |
           grep -r "private" src/rental/Vehicle.java && echo "Encapsulation found" || echo "Encapsulation missing"
-          grep -r "extends" src/rental/Car.java && echo "Inheritance found in Car" || echo "Inheritance missing"
+          grep -r "extends" src/rental/Car.java && echo "Inheritance found" || echo "Inheritance missing"
           grep -r "@Override" src/rental/Car.java && echo "Polymorphism found" || echo "Polymorphism missing"
           grep -r "abstract" src/rental/Vehicle.java && echo "Abstraction found" || echo "Abstraction missing"
