@@ -21,10 +21,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Show project structure
+        run: |
+          echo "Project structure:"
+          find . -name "*.java" | head -20
+
       - name: Compile Java code
         run: |
-          cd src
-          javac rental/*.java
+          javac src/rental/*.java
           echo "Compilation successful!"
 
       - name: Check all required files exist
@@ -39,9 +43,8 @@ jobs:
 
       - name: Run the program
         run: |
-          cd src
-          javac rental/*.java
-          java rental.Main
+          javac src/rental/*.java
+          java -cp src rental.Main
 
       - name: Check OOP concepts
         run: |
